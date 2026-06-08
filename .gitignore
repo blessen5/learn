@@ -1,6 +1,11 @@
 # Binary
 learn
 
+# Generated completions
+bash-completion
+zsh-completion
+fish-completion
+
 # Go
 *.exe
 *.exe~
