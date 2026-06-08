@@ -27,7 +27,7 @@ var todayCmd = &cobra.Command{
 		templatesDir := config.TemplatesDir()
 		date := time.Now().Format("2006-01-02")
 		filename := date + ".md"
-		filePath := filepath.Join(cfg.Repo.Root, "learning", "daily", filename)
+		filePath := filepath.Join(cfg.Repo.Root, "daily", filename)
 
 		// Check if file already exists
 		if _, err := os.Stat(filePath); err == nil {

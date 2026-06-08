@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"path/filepath"
 
 	"learn/internal/config"
 	"learn/internal/fzf"
@@ -21,7 +20,7 @@ var recentCmd = &cobra.Command{
 			return err
 		}
 
-		learningDir := filepath.Join(cfg.Repo.Root, "learning")
+		learningDir := cfg.Repo.Root
 		files, err := file.ListMarkdownFilesSorted(learningDir)
 		if err != nil {
 			return fmt.Errorf("failed to list notes: %w", err)

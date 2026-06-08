@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
-	"path/filepath"
 	"time"
 
 	"learn/internal/config"
@@ -26,7 +25,7 @@ var reviewCmd = &cobra.Command{
 			return err
 		}
 
-		learningDir := filepath.Join(cfg.Repo.Root, "learning")
+		learningDir := cfg.Repo.Root
 		allFiles, err := file.ListMarkdownFiles(learningDir)
 		if err != nil {
 			return fmt.Errorf("failed to list notes: %w", err)

@@ -32,7 +32,7 @@ var searchCmd = &cobra.Command{
 		}
 
 		// Build search path
-		searchPath := filepath.Join(cfg.Repo.Root, "learning")
+		searchPath := cfg.Repo.Root
 		if searchCategory != "" {
 			searchPath = filepath.Join(searchPath, searchCategory)
 			if _, err := os.Stat(searchPath); os.IsNotExist(err) {

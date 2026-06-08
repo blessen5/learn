@@ -70,7 +70,7 @@ var newCmd = &cobra.Command{
 
 		// Write file
 		filename := makeFilename(title)
-		categoryDir := filepath.Join(cfg.Repo.Root, "learning", category)
+		categoryDir := filepath.Join(cfg.Repo.Root, category)
 		filePath := filepath.Join(categoryDir, filename)
 
 		if err := writeFile(filePath, rendered); err != nil {

@@ -32,17 +32,17 @@ var initCmd = &cobra.Command{
 			fmt.Println()
 		}
 
-		// Create category directories
+		// Create category directories directly in current directory
 		categories := []string{
-			"learning/aws",
-			"learning/linux",
-			"learning/docker",
-			"learning/kubernetes",
-			"learning/networking",
-			"learning/ctf",
-			"learning/troubleshooting",
-			"learning/daily",
-			"learning/challenge",
+			"aws",
+			"linux",
+			"docker",
+			"kubernetes",
+			"networking",
+			"ctf",
+			"troubleshooting",
+			"daily",
+			"challenge",
 		}
 
 		for _, cat := range categories {
