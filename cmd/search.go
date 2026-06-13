@@ -9,6 +9,7 @@ import (
 
 	"learn/internal/config"
 	"learn/internal/fzf"
+	"learn/internal/file"
 
 	"github.com/spf13/cobra"
 )
@@ -18,8 +19,10 @@ var searchCategory string
 var searchCmd = &cobra.Command{
 	Use:   "search [query]",
 	Short: "Full-text search notes",
-	Long:  "Search notes using ripgrep with fzf selection and bat preview.",
-	Args:  cobra.MaximumNArgs(1),
+	Long: `Search notes using ripgrep with fzf selection and bat preview.
+
+Without a query, lists all notes for interactive browsing.`,
+	Args: cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load()
 		if err != nil {
@@ -40,29 +43,34 @@ var searchCmd = &cobra.Command{
 			}
 		}
 
-		// Run ripgrep
-		rgArgs := []string{"--files-with-matches"}
-		if query != "" {
-			rgArgs = append(rgArgs, query)
-		}
-		rgArgs = append(rgArgs, searchPath)
+		var files []string
 
-		rgCmd := exec.Command("rg", rgArgs...)
-		rgOut, err := rgCmd.Output()
-		if err != nil {
-			if exitErr, ok := err.(*exec.ExitError); ok && exitErr.ExitCode() == 1 {
-				return fmt.Errorf("no matches found")
+		if query == "" {
+			// No query: list all markdown files
+			files, err = file.ListMarkdownFiles(searchPath)
+			if err != nil {
+				return fmt.Errorf("failed to list notes: %w", err)
 			}
-			return fmt.Errorf("ripgrep failed: %w", err)
+		} else {
+			// With query: use ripgrep for full-text search
+			rgArgs := []string{"--files-with-matches", query, searchPath}
+			rgCmd := exec.Command("rg", rgArgs...)
+			rgOut, rgErr := rgCmd.Output()
+			if rgErr != nil {
+				if exitErr, ok := rgErr.(*exec.ExitError); ok && exitErr.ExitCode() == 1 {
+					return fmt.Errorf("no matches found for %q", query)
+				}
+				return fmt.Errorf("ripgrep failed: %w", rgErr)
+			}
+			files = strings.Split(strings.TrimSpace(string(rgOut)), "\n")
 		}
 
-		files := strings.Split(strings.TrimSpace(string(rgOut)), "\n")
 		if len(files) == 0 || (len(files) == 1 && files[0] == "") {
-			return fmt.Errorf("no matches found")
+			return fmt.Errorf("no notes found")
 		}
 
 		// Present via fzf with bat preview
-		selected, err := fzf.SelectWithPreview(files, "Search results")
+		selected, err := fzf.SelectWithPreview(files, "Notes")
 		if err != nil {
 			return err
 		}
