@@ -27,12 +27,12 @@ sudo make install
 | [fzf](https://github.com/junegunn/fzf) | Interactive selection | `sudo dnf install fzf` |
 | [ripgrep](https://github.com/BurntSushi/ripgrep) | Full-text search | `sudo dnf install ripgrep` |
 | [bat](https://github.com/sharkdp/bat) | Syntax-highlighted preview | `sudo dnf install bat` |
+| [glow](https://github.com/charmbracelet/glow) | Markdown terminal viewer | `sudo dnf install glow` |
 
 #### Optional
 
 | Tool | Purpose | Install |
 |------|---------|---------|
-| [glow](https://github.com/charmbracelet/glow) | Markdown terminal viewer | `sudo dnf install glow` |
 | [tdf](https://github.com/justjavac/tdf) | Terminal PDF viewer | `go install github.com/justjavac/tdf@latest` |
 | [wkhtmltopdf](https://wkhtmltopdf.org/) | PDF export | `sudo dnf install wkhtmltopdf` |
 
