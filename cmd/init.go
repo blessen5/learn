@@ -60,8 +60,16 @@ var initCmd = &cobra.Command{
 			return fmt.Errorf("failed to save config: %w", err)
 		}
 
-		// Copy bundled templates
+		// Copy bundled templates (backup existing first)
 		templatesDir := config.TemplatesDir()
+		if _, err := os.Stat(templatesDir); err == nil {
+			// Templates dir exists, back it up
+			backupDir := templatesDir + ".bak"
+			if err := os.Rename(templatesDir, backupDir); err != nil {
+				return fmt.Errorf("failed to backup templates: %w", err)
+			}
+			fmt.Printf("Existing templates backed up to: %s\n", backupDir)
+		}
 		if err := template.CopyDefaults(templatesDir); err != nil {
 			return fmt.Errorf("failed to copy templates: %w", err)
 		}

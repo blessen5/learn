@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"learn/internal/config"
+	"learn/internal/editor"
 	"learn/internal/template"
 
 	"github.com/spf13/cobra"
@@ -25,7 +26,12 @@ var todayCmd = &cobra.Command{
 		}
 
 		templatesDir := config.TemplatesDir()
-		date := time.Now().Format("2006-01-02")
+		now := time.Now()
+		// If before 5am, use previous day (still "today" socially)
+		if now.Hour() < 5 {
+			now = now.AddDate(0, 0, -1)
+		}
+		date := now.Format("2006-01-02")
 		filename := date + ".md"
 		filePath := filepath.Join(cfg.Repo.Root, "daily", filename)
 
@@ -33,7 +39,7 @@ var todayCmd = &cobra.Command{
 		if _, err := os.Stat(filePath); err == nil {
 			fmt.Printf("Journal entry for %s already exists.\n", date)
 			fmt.Printf("Opening: %s\n", filePath)
-			openInEditor(filePath)
+			editor.OpenInEditor(filePath)
 			return nil
 		}
 
@@ -50,7 +56,7 @@ var todayCmd = &cobra.Command{
 		}
 
 		fmt.Printf("Created: %s\n", filePath)
-		openInEditor(filePath)
+		editor.OpenInEditor(filePath)
 
 		return nil
 	},

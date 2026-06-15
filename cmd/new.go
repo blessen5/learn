@@ -1,12 +1,14 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
 	"os"
-	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"learn/internal/config"
+	"learn/internal/editor"
 	"learn/internal/fzf"
 	"learn/internal/template"
 
@@ -14,6 +16,21 @@ import (
 )
 
 var noEdit bool
+
+// knownCategories lists the default categories for matching templates.
+var knownCategories = []string{
+	"linux", "aws", "docker", "kubernetes",
+	"networking", "ctf", "troubleshooting", "challenge", "daily",
+}
+
+func categoryExists(cfg *config.Config, name string) bool {
+	for _, c := range knownCategories {
+		if c == name {
+			return true
+		}
+	}
+	return false
+}
 
 var newCmd = &cobra.Command{
 	Use:   "new",
@@ -44,20 +61,21 @@ var newCmd = &cobra.Command{
 
 		// Prompt for title
 		fmt.Print("Note title: ")
-		var title string
-		fmt.Scanln(&title)
+		reader := bufio.NewReader(os.Stdin)
+		title, _ := reader.ReadString('\n')
+		title = strings.TrimSpace(title)
 		if title == "" {
 			return fmt.Errorf("title cannot be empty")
 		}
 
-		// Select category (mandatory)
-		categories := []string{
-			"linux", "aws", "docker", "kubernetes",
-			"networking", "ctf", "troubleshooting", "challenge",
-		}
-		category, err := fzf.Select(categories, "Select category")
-		if err != nil {
-			return err
+		// Auto-select category if template matches one
+		category := selectedTemplate
+		if !categoryExists(cfg, category) {
+			// Template doesn't match a category, ask
+			category, err = fzf.Select(knownCategories, "Select category")
+			if err != nil {
+				return err
+			}
 		}
 
 		// Load and render template
@@ -81,7 +99,7 @@ var newCmd = &cobra.Command{
 
 		// Open in editor
 		if !noEdit {
-			openInEditor(filePath)
+			editor.OpenInEditor(filePath)
 		}
 
 		return nil
@@ -105,30 +123,4 @@ func writeFile(path, content string) error {
 		return err
 	}
 	return os.WriteFile(path, []byte(content), 0644)
-}
-
-func openInEditor(path string) {
-	editor := os.Getenv("EDITOR")
-	if editor == "" {
-		editor = "vi"
-	}
-	cmd := exec.Command(editor, path)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Run()
-}
-
-func openInViewer(path string) {
-	// Try glow first, fall back to $EDITOR
-	if _, err := exec.LookPath("glow"); err == nil {
-		cmd := exec.Command("glow", "-p", path)
-		cmd.Stdin = os.Stdin
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		cmd.Run()
-		return
-	}
-	fmt.Println("glow not found, falling back to $EDITOR")
-	openInEditor(path)
 }

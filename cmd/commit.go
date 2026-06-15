@@ -76,8 +76,8 @@ If no message is provided, you will be prompted to enter one.`,
 			}
 		}
 
-		// Stage all and commit
-		if err := git.AddAll(repoRoot); err != nil {
+		// Stage only the markdown files and commit
+		if err := git.AddFiles(repoRoot, mdFiles); err != nil {
 			return fmt.Errorf("git add failed: %w", err)
 		}
 

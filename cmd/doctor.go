@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"os/exec"
 
 	"learn/internal/config"
+	"learn/internal/editor"
 	"learn/internal/fzf"
 	"learn/internal/git"
 
@@ -31,10 +31,11 @@ var doctorCmd = &cobra.Command{
 		// External tools
 		check("git", git.IsAvailable())
 		check("fzf", fzf.IsAvailable())
-		check("rg", hasBinary("rg"))
-		check("bat", hasBinary("bat"))
-		check("glow", hasBinary("glow"))
-		check("EDITOR", getEditor() != "")
+		check("rg", editor.HasBinary("rg"))
+		check("bat", editor.HasBinary("bat"))
+		check("glow", editor.HasBinary("glow"))
+		check("wkhtmltopdf", editor.HasBinary("wkhtmltopdf"))
+		check("EDITOR", editor.GetEditor() != "")
 
 		// Config file
 		cfgPath := config.ConfigPath()
@@ -47,7 +48,6 @@ var doctorCmd = &cobra.Command{
 			check("repository", false)
 			fmt.Printf("         run 'learn init' in your notes directory\n")
 		} else {
-			// Does the directory actually exist?
 			info, err := os.Stat(cfg.Repo.Root)
 			if err != nil || !info.IsDir() {
 				check("repository", false)
@@ -76,25 +76,4 @@ var doctorCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(doctorCmd)
-}
-
-func hasBinary(name string) bool {
-	_, err := exec.LookPath(name)
-	return err == nil
-}
-
-func getEditor() string {
-	if e := os.Getenv("EDITOR"); e != "" {
-		return e
-	}
-	if hasBinary("nvim") {
-		return "nvim"
-	}
-	if hasBinary("vim") {
-		return "vim"
-	}
-	if hasBinary("vi") {
-		return "vi"
-	}
-	return ""
 }

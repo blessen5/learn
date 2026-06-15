@@ -32,6 +32,16 @@ func Add(repoRoot, filepath string) error {
 	return cmd.Run()
 }
 
+// AddFiles stages specific files.
+func AddFiles(repoRoot string, files []string) error {
+	args := append([]string{"add"}, files...)
+	cmd := exec.Command("git", args...)
+	cmd.Dir = repoRoot
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
+
 // AddAll stages all changes.
 func AddAll(repoRoot string) error {
 	cmd := exec.Command("git", "add", ".")

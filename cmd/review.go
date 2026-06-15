@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"learn/internal/config"
+	"learn/internal/editor"
 	"learn/internal/fzf"
 	"learn/internal/file"
 
@@ -62,7 +63,7 @@ var reviewCmd = &cobra.Command{
 		}
 
 		fmt.Printf("Opening: %s\n", selected)
-		openInViewer(selected)
+		editor.OpenInViewer(selected)
 
 		return nil
 	},

@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"learn/internal/config"
+	"learn/internal/editor"
 	"learn/internal/fzf"
 	"learn/internal/file"
 
@@ -82,9 +83,9 @@ Without a query, lists all notes for interactive browsing.`,
 		}
 
 		if action == "read" {
-			openInViewer(selected)
+			editor.OpenInViewer(selected)
 		} else {
-			openInEditor(selected)
+			editor.OpenInEditor(selected)
 		}
 
 		return nil

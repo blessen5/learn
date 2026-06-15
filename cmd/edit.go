@@ -11,18 +11,18 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var recentCmd = &cobra.Command{
-	Use:   "recent",
-	Short: "Browse recently edited notes",
-	Long:  "List recently modified notes sorted by time, with fzf selection and bat preview.",
+var editCmd = &cobra.Command{
+	Use:   "edit [query]",
+	Short: "Edit an existing note",
+	Long:  "Browse and open a note in $EDITOR. Optionally filter with a search query.",
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		cfg, err := config.Load()
 		if err != nil {
 			return err
 		}
 
-		learningDir := cfg.Repo.Root
-		files, err := file.ListMarkdownFilesSorted(learningDir)
+		files, err := file.ListMarkdownFilesSorted(cfg.Repo.Root)
 		if err != nil {
 			return fmt.Errorf("failed to list notes: %w", err)
 		}
@@ -31,18 +31,18 @@ var recentCmd = &cobra.Command{
 			return fmt.Errorf("no notes found")
 		}
 
-		selected, err := fzf.SelectWithPreview(files, "Recent notes")
+		selected, err := fzf.SelectWithPreview(files, "Edit note")
 		if err != nil {
 			return err
 		}
 
-		fmt.Printf("Opening: %s\n", selected)
-		editor.OpenInViewer(selected)
+		fmt.Printf("Editing: %s\n", selected)
+		editor.OpenInEditor(selected)
 
 		return nil
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(recentCmd)
+	rootCmd.AddCommand(editCmd)
 }
