@@ -107,11 +107,16 @@ Auto-detects your shell (bash, zsh, fish) and installs completions to the standa
 # Create a directory for your notes
 mkdir ~/learning && cd ~/learning
 
-# Initialize
+# Initialize (creates default categories)
 learn init
 
 # Create your first note
 learn new
+
+# Add a custom category — just make a directory
+mkdir ~/learning/math
+
+# It shows up automatically in learn new, learn list, learn search
 
 # Start a daily journal
 learn today
@@ -161,7 +166,7 @@ See [CLI.md](CLI.md) for detailed usage, examples, and workflows.
 
 ## Templates
 
-Bundled templates: linux, aws, docker, kubernetes, networking, ctf, troubleshooting, daily, challenge.
+Bundled templates: linux, aws, docker, kubernetes, networking, ctf, troubleshooting, daily, challenge, general.
 
 All notes get YAML frontmatter with auto-generated tags:
 
@@ -175,6 +180,22 @@ tags: ["linux", "sysadmin", "cli"]
 status: active
 ---
 ```
+
+## Categories
+
+Default categories are created by `learn init`: aws, linux, docker, kubernetes, networking, ctf, troubleshooting, daily, challenge, general.
+
+**Adding custom categories** — just create a directory:
+
+```bash
+mkdir ~/learning/math
+mkdir ~/learning/physics
+mkdir ~/learning/exam-prep
+```
+
+New categories are discovered automatically. They appear in `learn new`, `learn list`, `learn search --category`, and everywhere else. No config changes needed.
+
+The **general** template works for any topic — use it for study notes, exam prep, or anything that doesn't fit a specific category.
 
 Customize templates at `~/.config/learn/templates/`. Running `learn init` again backs up existing templates before overwriting.
 
