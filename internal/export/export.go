@@ -68,7 +68,7 @@ func ExtractFrontmatter(content string) (meta map[string]string, body string) {
 	return
 }
 
-// GeneratePDF creates a PDF from a markdown file.
+// GeneratePDF creates a PDF from a markdown file using weasyprint.
 func GeneratePDF(mdPath, outputPath string) error {
 	// Read markdown
 	data, err := os.ReadFile(mdPath)
@@ -139,29 +139,18 @@ func GeneratePDF(mdPath, outputPath string) error {
 	}
 	tmpHTML.Close()
 
-	// Convert to PDF with wkhtmltopdf
-	cmd := exec.Command("wkhtmltopdf",
-		"--quiet",
-		"--page-size", "A4",
-		"--margin-top", "20mm",
-		"--margin-bottom", "20mm",
-		"--margin-left", "20mm",
-		"--margin-right", "20mm",
-		"--encoding", "UTF-8",
-		tmpHTML.Name(),
-		outputPath,
-	)
-
+	// Convert to PDF with weasyprint
+	cmd := exec.Command("weasyprint", tmpHTML.Name(), outputPath)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
-		return fmt.Errorf("wkhtmltopdf failed: %s\n%s", err, string(output))
+		return fmt.Errorf("weasyprint failed: %s\n%s", err, string(output))
 	}
 
 	return nil
 }
 
-// IsAvailable checks if wkhtmltopdf is installed.
+// IsAvailable checks if weasyprint is installed.
 func IsAvailable() bool {
-	_, err := exec.LookPath("wkhtmltopdf")
+	_, err := exec.LookPath("weasyprint")
 	return err == nil
 }

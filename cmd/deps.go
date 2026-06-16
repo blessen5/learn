@@ -34,9 +34,9 @@ func requireDeps(tools ...string) {
 			if !editor.HasBinary("glow") {
 				missing = append(missing, "glow")
 			}
-		case "wkhtmltopdf":
-			if !editor.HasBinary("wkhtmltopdf") {
-				missing = append(missing, "wkhtmltopdf")
+		case "weasyprint":
+			if !editor.HasBinary("weasyprint") {
+				missing = append(missing, "weasyprint")
 			}
 		case "EDITOR":
 			if editor.GetEditor() == "" {

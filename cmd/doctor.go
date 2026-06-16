@@ -38,7 +38,7 @@ var doctorCmd = &cobra.Command{
 
 		fmt.Println()
 		fmt.Println("Optional (for PDF export):")
-		check("wkhtmltopdf", editor.HasBinary("wkhtmltopdf"))
+		check("weasyprint", editor.HasBinary("weasyprint"))
 		check("tdf", editor.HasBinary("tdf"))
 
 		fmt.Println()

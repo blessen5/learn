@@ -118,11 +118,10 @@ learn export
 learn export linux/2026-06-08-lsof.md
 ```
 
-Requires `wkhtmltopdf`. PDF uses a white theme with blue accents, styled code blocks, tables, and tag pills.
+Requires `weasyprint`. PDF uses a white theme with blue accents, styled code blocks, tables, and tag pills.
 
 ```bash
-sudo dnf install wkhtmltopdf    # Fedora
-sudo apt install wkhtmltopdf    # Debian/Ubuntu
+pip install weasyprint
 ```
 
 ## Statistics

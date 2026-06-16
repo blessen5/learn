@@ -21,10 +21,10 @@ var exportCmd = &cobra.Command{
 	Long: `Export a markdown note to a beautifully styled PDF.
 
 If no filepath is given, select a note interactively via fzf.
-Requires wkhtmltopdf to be installed.`,
+Requires weasyprint to be installed.`,
 	Args: cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		requireDeps("wkhtmltopdf")
+		requireDeps("weasyprint")
 
 		cfg, err := config.Load()
 		if err != nil {

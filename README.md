@@ -34,47 +34,47 @@ sudo make install
 | Tool | Purpose | Install |
 |------|---------|---------|
 | [tdf](https://github.com/justjavac/tdf) | Terminal PDF viewer | `go install github.com/justjavac/tdf@latest` |
-| [wkhtmltopdf](https://wkhtmltopdf.org/) | PDF export | See below |
+| [weasyprint](https://weasyprint.org/) | PDF export | `pip install weasyprint` |
 
 #### Install all dependencies
 
 **Fedora / RHEL:**
 ```bash
 sudo dnf install fzf ripgrep bat glow
-# optional: sudo dnf install wkhtmltopdf
+# optional: pip install weasyprint
 ```
 
 **Debian / Ubuntu:**
 ```bash
 sudo apt install fzf ripgrep bat
 # glow: https://github.com/charmbracelet/glow/releases
-# wkhtmltopdf: sudo apt install wkhtmltopdf
+# weasyprint: pip install weasyprint
 ```
 
 **Arch:**
 ```bash
 sudo pacman -S fzf ripgrep bat glow
-# optional: sudo pacman -S wkhtmltopdf
+# optional: pip install weasyprint
 ```
 
 **openSUSE:**
 ```bash
 sudo zypper install fzf ripgrep bat
 # glow: https://github.com/charmbracelet/glow/releases
-# optional: sudo zypper install wkhtmltopdf
+# optional: pip install weasyprint
 ```
 
 **Alpine:**
 ```bash
 apk add fzf ripgrep bat
 # glow: https://github.com/charmbracelet/glow/releases
-# optional: apk add wkhtmltopdf
+# optional: pip install weasyprint
 ```
 
 **macOS (Homebrew):**
 ```bash
 brew install fzf ripgrep bat glow
-# optional: brew install wkhtmltopdf
+# optional: pip install weasyprint
 ```
 
 **tdf (all platforms, requires Go):**
