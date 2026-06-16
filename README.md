@@ -158,7 +158,7 @@ learn push
 
 ## Usage
 
-See [CLI.md](CLI.md) for detailed usage, examples, and workflows.
+See [CLI.md](docs/CLI.md) for detailed usage, examples, and workflows.
 
 ## Philosophy
 
@@ -185,7 +185,7 @@ status: active
 ---
 ```
 
-**Generating templates with AI:** See [TEMPLATE-GUIDE.md](TEMPLATE-GUIDE.md) — a structured guide for AI models (ChatGPT, Claude, Gemini, etc.) to generate custom templates that follow the correct format with frontmatter and placeholders. Feed it to your AI of choice and ask it to create a template for your topic.
+**Generating templates with AI:** See [TEMPLATE-GUIDE.md](docs/TEMPLATE-GUIDE.md) — a structured guide for AI models (ChatGPT, Claude, Gemini, etc.) to generate custom templates that follow the correct format with frontmatter and placeholders. Feed it to your AI of choice and ask it to create a template for your topic.
 
 ## Categories
 
