@@ -66,23 +66,45 @@ func Status(repoRoot string) ([]string, error) {
 		return nil, fmt.Errorf("not a git repository: %s", repoRoot)
 	}
 
-	cmd := exec.Command("git", "status", "--porcelain", "-uall")
+	// Use git diff and ls-files for reliable parsing
+	var files []string
+
+	// Modified/staged files
+	cmd := exec.Command("git", "diff", "--name-only", "--cached")
 	cmd.Dir = repoRoot
-	out, err := cmd.CombinedOutput()
-	if err != nil {
-		return nil, fmt.Errorf("git status failed: %s\n%s", err, string(out))
+	out, err := cmd.Output()
+	if err == nil {
+		for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+			if line != "" {
+				files = append(files, line)
+			}
+		}
 	}
 
-	var files []string
-	for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
-		if line == "" {
-			continue
-		}
-		// git status --porcelain format: "XY filename"
-		if len(line) > 3 {
-			files = append(files, strings.TrimSpace(line[3:]))
+	// Unstaged modifications
+	cmd = exec.Command("git", "diff", "--name-only")
+	cmd.Dir = repoRoot
+	out, err = cmd.Output()
+	if err == nil {
+		for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+			if line != "" {
+				files = append(files, line)
+			}
 		}
 	}
+
+	// Untracked files
+	cmd = exec.Command("git", "ls-files", "--others", "--exclude-standard")
+	cmd.Dir = repoRoot
+	out, err = cmd.Output()
+	if err == nil {
+		for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+			if line != "" {
+				files = append(files, line)
+			}
+		}
+	}
+
 	return files, nil
 }
 
