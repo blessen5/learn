@@ -63,7 +63,7 @@ Select a note interactively via fzf. Requires weasyprint to be installed.`,
 		fmt.Println("Done.")
 
 		// Offer to open the PDF (only in interactive mode)
-		if isTerminal() {
+		if editor.IsTerminal() {
 			openChoices := []string{"no"}
 			if editor.HasBinary("tdf") {
 				openChoices = append([]string{"tdf (terminal)"}, openChoices...)
@@ -89,12 +89,4 @@ Select a note interactively via fzf. Requires weasyprint to be installed.`,
 
 func init() {
 	rootCmd.AddCommand(exportCmd)
-}
-
-func isTerminal() bool {
-	fi, err := os.Stdin.Stat()
-	if err != nil {
-		return false
-	}
-	return fi.Mode()&os.ModeCharDevice != 0
 }

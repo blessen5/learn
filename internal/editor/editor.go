@@ -74,3 +74,12 @@ func OpenInPDFViewer(path string) {
 	}
 	fmt.Printf("No PDF viewer found. File saved at: %s\n", path)
 }
+
+// IsTerminal checks if stdin is a terminal (not piped/scripted).
+func IsTerminal() bool {
+	fi, err := os.Stdin.Stat()
+	if err != nil {
+		return false
+	}
+	return fi.Mode()&os.ModeCharDevice != 0
+}

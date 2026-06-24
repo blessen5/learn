@@ -159,6 +159,7 @@ learn push
 | `learn push` | Push to git remote |
 | `learn pull` | Pull from git remote |
 | `learn log` | Show git history of notes |
+| `learn end` | End session: reflect, commit, stats, optional shutdown |
 | `learn export` | Export a note to styled PDF |
 | `learn stats` | Show learning statistics and streaks |
 | `learn doctor` | Check environment health |
